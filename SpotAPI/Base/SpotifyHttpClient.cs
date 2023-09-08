@@ -98,7 +98,7 @@ namespace SpotAPI.Base
 
             _accessToken = null;
 
-            await GetToken();
+            await GetToken(fromSignIn: true);
 
             return _grantCode;
         }
