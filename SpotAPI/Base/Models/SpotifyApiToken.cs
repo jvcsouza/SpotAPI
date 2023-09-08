@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace Spotify.SDK.Base.Models
+namespace SpotAPI.Base.Models
 {
     internal class SpotifyApiToken
     {

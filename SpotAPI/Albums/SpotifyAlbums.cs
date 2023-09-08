@@ -2,7 +2,6 @@
 using System.Threading.Tasks;
 using SpotAPI.Albums.Models;
 using SpotAPI.Base;
-using Spotify.SDK.Base;
 
 namespace SpotAPI.Albums
 {
@@ -13,9 +12,9 @@ namespace SpotAPI.Albums
             Authorize(client, secret);
         }
 
-        public async Task<List<SpotifyTracksModel>> GetTracksAsync(string albumId)
+        public async Task<List<SpotifyTracksModel>> GetTracksAsync(string albumId, int? page = null, int? size = null)
         {
-            return await ExecuteAsListAsync<SpotifyTracksModel>($"{ResourceName}/{albumId}/tracks");
+            return await ExecuteAsListAsync<SpotifyTracksModel>($"{ResourceName}/{albumId}/tracks", page, size);
         }
 
         public Task<List<SpotifyAlbumModel>> SearchAsync(string text)

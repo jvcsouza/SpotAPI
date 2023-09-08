@@ -9,11 +9,11 @@ namespace SpotAPI.Utils
         //private static MapperConfiguration _config;
         //private static IMapper _mapper;
 
-        public static void Initialize()
-        {
+        //public static void Initialize()
+        //{
             //_config = new MapperConfiguration(e => Configure(e));
             //_mapper = _config.CreateMapper();
-        }
+        //}
 
         //private static void Configure(IMapperConfigurationExpression ex)
         //{
@@ -28,9 +28,9 @@ namespace SpotAPI.Utils
             //return _mapper.Map<T>(data);
         }
 
-        public T Convert<T>(object data)
-        {
-            return ConvertTo<T>(data);
-        }
+        //public T Convert<T>(object data)
+        //{
+        //    return ConvertTo<T>(data);
+        //}
     }
 }

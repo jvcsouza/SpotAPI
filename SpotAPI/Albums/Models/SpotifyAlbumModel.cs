@@ -1,8 +1,6 @@
 ﻿using System.Collections.Generic;
-using System.Dynamic;
 using Newtonsoft.Json;
 using SpotAPI.Base.Models;
-using Spotify.SDK.Base.Models;
 
 namespace SpotAPI.Albums.Models
 {

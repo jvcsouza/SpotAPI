@@ -27,7 +27,7 @@ namespace SpotAPI.User
             if (!_signed)
                 throw new UnauthorizedAccessException("User not logged");
 
-            return ExecuteAsListAsync<SpotifyPlaylistsModel>($"me/playlists");
+            return ExecuteAsListAsync<SpotifyPlaylistsModel>("me/playlists");
         }
 
         public Task<SpotifyUserModel> FollowPlaylistAsync(string paylistId, bool isPublic = true)

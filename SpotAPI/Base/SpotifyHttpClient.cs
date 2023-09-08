@@ -10,12 +10,13 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using SpotAPI.Base.Models;
 using SpotAPI.Utils;
-using Spotify.SDK.Base.Models;
 
 namespace SpotAPI.Base
 {
     [SuppressMessage("ReSharper", "InconsistentNaming")]
+    [SuppressMessage("ReSharper", "RedundantAssignment")]
     public class SpotifyHttpClient
     {
         private static string _clientId;
@@ -37,7 +38,7 @@ namespace SpotAPI.Base
 
         protected void Authorize(string clientId, string clientSecret)
         {
-            if(_signed || !string.IsNullOrEmpty(_accessToken))
+            if (_signed || !string.IsNullOrEmpty(_accessToken))
                 return;
 
             _clientId = clientId;
@@ -176,8 +177,17 @@ namespace SpotAPI.Base
 
         protected static StringContent BuildContent(object content) => new(JsonConvert.SerializeObject(content));
 
-        protected async Task<List<T>> ExecuteAsListAsync<T>(string url, int page = 1, int size = 25, string propertyName = null)
+        protected async Task<List<T>> ExecuteAsListAsync<T>(string url, int? page = null, int? size = null, bool pagged = true, string propertyName = null)
         {
+            if (page is null && size is null)
+                pagged = false;
+
+            if (page is null or < 1)
+                page = 1;
+
+            if (size is null or < 1)
+                size = 25;
+
             using var client = await CreateClient(API_URL);
             var contentReturnData = new List<T>();
             var contentData = default(SpotifyListBase<T>);
@@ -189,8 +199,8 @@ namespace SpotAPI.Base
 
                 if (!response.IsSuccessStatusCode)
                 {
-                    var error = await response.Content.ReadAsAsync<SpotifyApiError>();
                     var e = await response.Content.ReadAsStringAsync();
+                    var error = await response.Content.ReadAsAsync<SpotifyApiError>();
 
                     if (response.StatusCode == HttpStatusCode.Unauthorized)
                         throw new UnauthorizedAccessException(error.Error.Message);
@@ -206,13 +216,16 @@ namespace SpotAPI.Base
                 else
                 {
                     var wrapContent = await response.Content.ReadAsAsync<ExpandoObject>();
-                    ((IDictionary<string, object>)wrapContent).TryGetValue(propertyName, out object newContent);
+                    ((IDictionary<string, object>)wrapContent).TryGetValue(propertyName, out var newContent);
                     contentData = Map.ConvertTo<SpotifyListBase<T>>(newContent);
                 }
 
                 contentReturnData.AddRange(contentData.Items);
 
-                Console.WriteLine($"Executing {url}; Page: {page}; Size: {size}; Loaded: {contentReturnData.Count} de {contentData.Total} ({(decimal)contentReturnData.Count / (decimal)contentData.Total * 100:0.00}%);");
+                Console.WriteLine($"Executing {url}; Page: {page}; Size: {size}; Loaded: {contentReturnData.Count} de {contentData.Total} ({contentReturnData.Count / (decimal)contentData.Total * 100:0.00}%);");
+
+                if (pagged)
+                    break;
 
                 page++;
 

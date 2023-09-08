@@ -40,7 +40,7 @@ namespace SpotAPI.Base
 
         protected virtual async Task<List<T>> SearchAsync(string text, string resource)
         {
-            return await ExecuteAsListAsync<T>($"search?query={text}&type={resource}", 1, 50, ResourceName);
+            return await ExecuteAsListAsync<T>($"search?query={text}&type={resource}", 1, 50, false, ResourceName);
         }
     }
 }
