@@ -231,9 +231,4 @@ namespace SpotAPI.Base
             return contentReturnData;
         }
     }
-
-    public class SpotifyHttpClientBase
-    {
-
-    }
 }

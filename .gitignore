@@ -1,1 +1,4 @@
 SpotAPI.Tests
+.vs
+bin/
+obj/
