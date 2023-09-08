@@ -1,0 +1,10 @@
+C:\Users\João\source\repos\SpotAPI\SpotAPI\obj\Debug\netstandard2.1\SpotAPI.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\João\source\repos\SpotAPI\SpotAPI\obj\Debug\netstandard2.1\SpotAPI.AssemblyInfoInputs.cache
+C:\Users\João\source\repos\SpotAPI\SpotAPI\obj\Debug\netstandard2.1\SpotAPI.AssemblyInfo.cs
+C:\Users\João\source\repos\SpotAPI\SpotAPI\obj\Debug\netstandard2.1\SpotAPI.csproj.CoreCompileInputs.cache
+C:\Users\João\source\repos\SpotAPI\SpotAPI\obj\Debug\netstandard2.1\SpotAPI.csproj.AssemblyReference.cache
+C:\Users\João\source\repos\SpotAPI\SpotAPI\bin\Debug\netstandard2.1\SpotAPI.deps.json
+C:\Users\João\source\repos\SpotAPI\SpotAPI\bin\Debug\netstandard2.1\SpotAPI.dll
+C:\Users\João\source\repos\SpotAPI\SpotAPI\bin\Debug\netstandard2.1\SpotAPI.pdb
+C:\Users\João\source\repos\SpotAPI\SpotAPI\obj\Debug\netstandard2.1\SpotAPI.dll
+C:\Users\João\source\repos\SpotAPI\SpotAPI\obj\Debug\netstandard2.1\SpotAPI.pdb
