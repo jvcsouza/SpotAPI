@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Net.Sockets;
 using System.Threading.Tasks;
 using SpotAPI.Base;
 using SpotAPI.Playlists.Models;
@@ -10,12 +9,12 @@ namespace SpotAPI.User
 {
     public class SpotifyUser : SpotifyHttpClient
     {
-        public SpotifyUser(string client, string secret)
+        public SpotifyUser(string client, string secret) : base(client, secret)
         {
-            Authorize(client, secret);
+
         }
 
-        public Task<SpotifyUserModel> Info()
+        public Task<SpotifyUserModel> GetInfoAsync()
         {
             if (!_signed)
                 throw new UnauthorizedAccessException("User not logged");
@@ -23,15 +22,15 @@ namespace SpotAPI.User
             return Execute<SpotifyUserModel>(client => client.GetAsync("me"));
         }
 
-        public Task<List<SpotifyPlaylistsModel>> Playlists()
+        public Task<List<SpotifyPlaylistsModel>> GetPlaylistsAsync()
         {
             if (!_signed)
                 throw new UnauthorizedAccessException("User not logged");
 
-            return ExecuteAsList<SpotifyPlaylistsModel>($"me/playlists");
+            return ExecuteAsListAsync<SpotifyPlaylistsModel>($"me/playlists");
         }
 
-        public Task<SpotifyUserModel> FollowPlaylist(string paylistId, bool isPublic = true)
+        public Task<SpotifyUserModel> FollowPlaylistAsync(string paylistId, bool isPublic = true)
         {
             if (!_signed)
                 throw new UnauthorizedAccessException("User not logged");
@@ -39,7 +38,7 @@ namespace SpotAPI.User
             return Execute<SpotifyUserModel>(client => client.PutAsync($"playlists/{paylistId}/followers", BuildContent(new { Public = isPublic })));
         }
 
-        public Task SignIn(bool waitUser = true)
+        public Task SignInAsync(bool waitUser = true)
         {
             return RequestUserSignIn(waitUser);
         }

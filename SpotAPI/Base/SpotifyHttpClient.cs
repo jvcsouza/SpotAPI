@@ -18,9 +18,9 @@ namespace SpotAPI.Base
     [SuppressMessage("ReSharper", "InconsistentNaming")]
     public class SpotifyHttpClient
     {
-        private string _clientId;
-        private string _clientSecret;
-        private static string _grantCode;
+        private static string _clientId;
+        private static string _clientSecret;
+        private string _grantCode;
         private static string _accessToken;
         protected static bool _signed;
         private const string API_URL = "https://api.spotify.com/v1/";
@@ -29,23 +29,11 @@ namespace SpotAPI.Base
 
         protected SpotifyHttpClient() { }
 
-        //protected SpotifyHttpClient(string accessToken)
-        //{
-        //    _accessToken = accessToken;
-        //}
-
         protected SpotifyHttpClient(string clientId, string clientSecret)
         {
             _clientId = clientId;
             _clientSecret = clientSecret;
         }
-
-        //internal void Authorize(string grantCode)
-        //{
-        //    _accessToken = null;
-        //    _clientId = null;
-        //    _clientSecret = null;
-        //}
 
         protected void Authorize(string clientId, string clientSecret)
         {
@@ -107,13 +95,14 @@ namespace SpotAPI.Base
             httpListener.Stop();
             process!.Close();
 
-            _signed = true;
             _accessToken = null;
+
+            await GetToken();
 
             return _grantCode;
         }
 
-        private async Task<string> GetToken()
+        private async Task<string> GetToken(bool fromSignIn = false)
         {
             if (!string.IsNullOrEmpty(_accessToken))
                 return _accessToken;
@@ -129,10 +118,10 @@ namespace SpotAPI.Base
 
             var formDic = new Dictionary<string, string>
             {
-                { "grant_type", _signed ? "authorization_code" : "client_credentials" }
+                { "grant_type", fromSignIn ? "authorization_code" : "client_credentials" }
             };
 
-            if (_signed)
+            if (fromSignIn)
             {
                 formDic.TryAdd("code", _grantCode);
                 formDic.TryAdd("redirect_uri", LOCAL_URL);
@@ -143,6 +132,7 @@ namespace SpotAPI.Base
             if (response.IsSuccessStatusCode)
             {
                 var content = await response.Content.ReadAsAsync<SpotifyApiToken>();
+                _signed = true;
                 return _accessToken = content.AccessToken;
             }
             else
@@ -186,7 +176,7 @@ namespace SpotAPI.Base
 
         protected static StringContent BuildContent(object content) => new(JsonConvert.SerializeObject(content));
 
-        protected async Task<List<T>> ExecuteAsList<T>(string url, int page = 1, int size = 25, string propertyName = null)
+        protected async Task<List<T>> ExecuteAsListAsync<T>(string url, int page = 1, int size = 25, string propertyName = null)
         {
             using var client = await CreateClient(API_URL);
             var contentReturnData = new List<T>();

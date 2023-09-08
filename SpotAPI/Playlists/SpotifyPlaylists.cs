@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Net.Sockets;
 using System.Threading.Tasks;
 using SpotAPI.Base;
@@ -14,14 +15,15 @@ namespace SpotAPI.Playlists
             Authorize(client, secret);
         }
 
-        public async Task<List<SpotifyTracksModel>> Tracks(string playlistId)
+        public async Task<List<SpotifyPlaylistTrackModel>> GetTracksAsync(string playlistId)
         {
-            return await ExecuteAsList<SpotifyTracksModel>($"{_resourceName}/{playlistId}/tracks");
+            var tracks = await ExecuteAsListAsync<SpotifyPlaylistTrack>($"{ResourceName}/{playlistId}/tracks");
+            return tracks.Select(x => x.Track).ToList();
         }
 
         public async Task<List<SpotifyPlaylistsModel>> FromUser(string userId)
         {
-            return await ExecuteAsList<SpotifyPlaylistsModel>($"users/{userId}/{_resourceName}");
+            return await ExecuteAsListAsync<SpotifyPlaylistsModel>($"users/{userId}/{ResourceName}");
         }
     }
 }

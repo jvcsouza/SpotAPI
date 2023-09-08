@@ -13,14 +13,14 @@ namespace SpotAPI.Artists
             Authorize(client, secret);
         }
 
-        public async Task<List<SpotifyAlbumModel>> ArtistsAlbums(string artistsId)
+        public async Task<List<SpotifyAlbumModel>> GetAlbumsAsync(string artistId)
         {
-            return await ExecuteAsList<SpotifyAlbumModel>($"{_resourceName}/{artistsId}/albums", 1, 50);
+            return await ExecuteAsListAsync<SpotifyAlbumModel>($"{ResourceName}/{artistId}/albums", 1, 50);
         }
 
-        public Task<List<SpotifyArtistsModel>> Search(string text)
+        public Task<List<SpotifyArtistsModel>> SearchAsync(string text)
         {
-            return base.Search(text, "artist");
+            return SearchAsync(text, "artist");
         }
     }
 }
